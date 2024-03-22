@@ -31,7 +31,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.eurdpayment.Asset.assetList
+import com.example.eurdpayment.Algorand.assetList
 import com.example.eurdpayment.Screens.ReceiveScreen
 import com.example.eurdpayment.Screens.SendMoneyScreen
 
@@ -54,7 +54,8 @@ fun Navigation(){
                         unselectedContentColor = Color.White.copy(0.4f),
                         onClick = {
                             navController.navigate(screen.route) {
-                                // Pop up to the start destination of the graph to
+                                // Pop up to the start destination of th
+                                // graph to
                                 // avoid building up a large stack of destinations
                                 // on the back stack as users select items
                                 popUpTo(navController.graph.findStartDestination().id) {
@@ -89,14 +90,15 @@ fun Navigation(){
                         type = NavType.StringType
                     },
                     navArgument("assetAmount") { // Define the second argument
-                        type = NavType.IntType // Assuming the ID is a string, adjust if necessary
+                        type = NavType.FloatType // Assuming the ID is a string, adjust if necessary
                     }
                 )
             ) { entry ->
+
                 PaymentScreen(
                     navController = navController,
                     asset = assetList.first { it.name ==  entry.arguments?.getString("assetName")},
-                    amount = entry.arguments?.getInt("assetAmount")!!
+                    amount = entry.arguments?.getFloat("assetAmount")!!
                 )
             }
         }
