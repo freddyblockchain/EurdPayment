@@ -34,7 +34,7 @@ import kotlinx.coroutines.withContext
 
 
 @Composable
-fun PaymentScreen(asset: Asset, amount: Float, navController: NavController) {
+fun PaymentScreen(asset: Asset, amount: Float, receiver: String, navController: NavController) {
     var paymentInitiated by remember {
         mutableStateOf(false)
     }
@@ -59,7 +59,7 @@ fun PaymentScreen(asset: Asset, amount: Float, navController: NavController) {
                 CoroutineScope(Dispatchers.IO).launch {
                     // Perform your network operation here
                     try {
-                        val result = AssetTransfer(asset, amount)// Replace this with your actual network call
+                        val result = AssetTransfer(asset, amount, receiver)// Replace this with your actual network call
                         withContext(Dispatchers.Main) {
                             paymentSuccessfull = result
                         }

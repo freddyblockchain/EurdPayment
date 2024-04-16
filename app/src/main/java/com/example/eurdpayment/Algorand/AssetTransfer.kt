@@ -1,5 +1,6 @@
 package com.example.eurdpayment.Algorand
 
+import com.algorand.algosdk.crypto.Address
 import com.algorand.algosdk.transaction.SignedTransaction
 import com.algorand.algosdk.transaction.Transaction
 import com.algorand.algosdk.util.Encoder
@@ -33,7 +34,7 @@ fun convertBigIntToFloat(asset: Asset, bigIntAmount: BigInteger): Float{
     // Convert the result to a float value
     return convertedAmount.toFloat()
 }
-fun AssetTransfer(asset: Asset, amount: Float): Boolean {
+fun AssetTransfer(asset: Asset, amount: Float, assetReceiver: String): Boolean {
     val rsp: Response<TransactionParametersResponse> = algod.TransactionParams().execute()
     val sp: TransactionParametersResponse = rsp.body()
 
@@ -41,7 +42,7 @@ fun AssetTransfer(asset: Asset, amount: Float): Boolean {
 
     val xferTxn: Transaction = Transaction.AssetTransferTransactionBuilder().suggestedParams(sp)
         .sender(dummyAccount.address)
-        .assetReceiver(receivingAccount)
+        .assetReceiver(assetReceiver)
         .assetIndex(asset.id)
         .assetAmount(assetAmountAsLong)
         .build()
@@ -92,4 +93,23 @@ suspend fun getAanNames(): List<String> = withContext(Dispatchers.IO) {
         println("Names not found")
     }
     listOf()
+}
+
+suspend fun getAanAccountAdress(aanName: String): String = withContext(Dispatchers.IO){
+    try{
+        if(aanName.length >= 32){
+            println("aanNameTooLong")
+            return@withContext ""
+        }
+        val boxesRequest = algod.GetApplicationBoxByName(AanAppId)
+        val box = boxesRequest.name("str:$aanName").execute()
+        val boxValue = box.body()
+        val address = Address(boxValue.value)
+        val result = address.encodeAsString()
+        return@withContext result
+    } catch (err: Exception) {
+        println(err.message)
+        println("Names not found")
+    }
+    ""
 }

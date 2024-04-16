@@ -84,13 +84,16 @@ fun Navigation(){
                 ReceiveScreen(navController = navController)
             }
             composable(
-                route = EurdPaymentScreen.PaymentScreen.route + "/{assetName}/{assetAmount}",
+                route = EurdPaymentScreen.PaymentScreen.route + "/{assetName}/{assetAmount}/{assetReceiver}",
                 arguments = listOf(
                     navArgument("assetName") {
                         type = NavType.StringType
                     },
                     navArgument("assetAmount") { // Define the second argument
                         type = NavType.FloatType // Assuming the ID is a string, adjust if necessary
+                    },
+                    navArgument("assetReceiver") { // Define the second argument
+                        type = NavType.StringType // Assuming the ID is a string, adjust if necessary
                     }
                 )
             ) { entry ->
@@ -98,7 +101,8 @@ fun Navigation(){
                 PaymentScreen(
                     navController = navController,
                     asset = assetList.first { it.name ==  entry.arguments?.getString("assetName")},
-                    amount = entry.arguments?.getFloat("assetAmount")!!
+                    amount = entry.arguments?.getFloat("assetAmount")!!,
+                    receiver = entry.arguments?.getString("assetReceiver")!!
                 )
             }
         }
