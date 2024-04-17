@@ -32,6 +32,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.eurdpayment.Algorand.assetList
+import com.example.eurdpayment.Screens.HistoryScreen
 import com.example.eurdpayment.Screens.ReceiveScreen
 import com.example.eurdpayment.Screens.SendMoneyScreen
 
@@ -82,6 +83,9 @@ fun Navigation(){
             }
             composable(route = EurdPaymentScreen.ReceiveScreen.route) {
                 ReceiveScreen(navController = navController)
+            }
+            composable(route = EurdPaymentScreen.HistoryScreen.route) {
+                HistoryScreen(navController = navController)
             }
             composable(
                 route = EurdPaymentScreen.PaymentScreen.route + "/{assetName}/{assetAmount}/{assetReceiver}",

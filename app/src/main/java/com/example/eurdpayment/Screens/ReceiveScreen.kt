@@ -6,5 +6,5 @@ import androidx.navigation.NavController
 
 @Composable
 fun ReceiveScreen(navController: NavController) {
-    Text("Retreive screen")
+    Text("Receive screen")
 }

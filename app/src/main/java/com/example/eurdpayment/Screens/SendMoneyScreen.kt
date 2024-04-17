@@ -46,7 +46,7 @@ fun SendMoneyScreen(navController: NavController) {
         }
 
         var receiverTextError by remember {
-            mutableStateOf(false)
+            mutableStateOf(true)
         }
 
         var buttonModifier = Modifier.width(100.dp)
