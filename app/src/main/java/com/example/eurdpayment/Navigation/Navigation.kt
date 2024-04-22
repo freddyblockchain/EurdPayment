@@ -33,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.eurdpayment.Algorand.assetList
 import com.example.eurdpayment.Screens.HistoryScreen
+import com.example.eurdpayment.Screens.QrCodeScreen
 import com.example.eurdpayment.Screens.ReceiveScreen
 import com.example.eurdpayment.Screens.SendMoneyScreen
 
@@ -107,6 +108,24 @@ fun Navigation(){
                     asset = assetList.first { it.name ==  entry.arguments?.getString("assetName")},
                     amount = entry.arguments?.getFloat("assetAmount")!!,
                     receiver = entry.arguments?.getString("assetReceiver")!!
+                )
+            }
+            composable(
+                route = EurdPaymentScreen.QrCodeScreen.route + "/{assetName}/{assetAmount}",
+                arguments = listOf(
+                    navArgument("assetName") {
+                        type = NavType.StringType
+                    },
+                    navArgument("assetAmount") { // Define the second argument
+                        type = NavType.FloatType // Assuming the ID is a string, adjust if necessary
+                    },
+                )
+            ) { entry ->
+
+                QrCodeScreen(
+                    navController = navController,
+                    asset = assetList.first { it.name ==  entry.arguments?.getString("assetName")},
+                    amount = entry.arguments?.getFloat("assetAmount")!!,
                 )
             }
         }

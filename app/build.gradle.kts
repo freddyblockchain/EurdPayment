@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    kotlin("plugin.serialization") version "1.9.23"
 }
 
 android {
@@ -69,4 +70,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("com.algorand:algosdk:2.4.0")
     implementation ("androidx.compose.material:material:1.6.3")
+    implementation ("com.google.zxing:core:3.5.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }

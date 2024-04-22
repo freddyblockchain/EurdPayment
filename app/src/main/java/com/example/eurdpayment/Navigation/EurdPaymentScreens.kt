@@ -6,11 +6,11 @@ sealed class EurdPaymentScreen(val route: String) {
     data object ReceiveScreen : EurdPaymentScreen("receive_screen")
 
     data object HistoryScreen : EurdPaymentScreen("History")
+    data object QrCodeScreen : EurdPaymentScreen("qr_code")
 }
 
 val screens = listOf(
     EurdPaymentScreen.HistoryScreen,
     EurdPaymentScreen.SendMoneyScreen,
     EurdPaymentScreen.ReceiveScreen,
-
 )
