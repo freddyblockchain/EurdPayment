@@ -1,5 +1,6 @@
 package com.example.eurdpayment.Screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,6 +17,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -28,11 +32,19 @@ import com.example.eurdpayment.Navigation.EurdPaymentScreen
 @Composable
 fun SendMoneyScreen(navController: NavController) {
 
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(), // Fill the maximum height to allow vertical centering
+            .fillMaxHeight()
+            .clickable {
+                // Release focus and hide keyboard
+                focusManager.clearFocus()
+                keyboardController?.hide()
+            },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center // Center the contents vertically
     ){
@@ -48,18 +60,21 @@ fun SendMoneyScreen(navController: NavController) {
         var receiverTextError by remember {
             mutableStateOf(true)
         }
+        var numberInputTextError by remember {
+            mutableStateOf(true)
+        }
 
         var buttonModifier = Modifier.width(100.dp)
 
         DropdownList(itemList = itemList, modifier = buttonModifier, onItemClick = {selectedAsset = assetList.first{asset -> asset.name == it}})
 
         Column() {
-            NumberInput(onNumberSelected = {selectedNumber = it}, asset = selectedAsset)
-            ReceiverInput(onReceiverChanged = {selectedReceiver = it}, setIsError = {receiverTextError = it})
+            NumberInput(onNumberSelected = {selectedNumber = it}, asset = selectedAsset, setIsError = {receiverTextError = it})
+            ReceiverInput(onReceiverChanged = {selectedReceiver = it}, setIsError = {numberInputTextError = it})
         }
 
         Button(onClick = {
-            if(!receiverTextError) {
+            if(!receiverTextError && !numberInputTextError) {
 
                 navController.navigate("${EurdPaymentScreen.PaymentScreen.route}/${selectedAsset.name}/${selectedNumber}/${selectedReceiver.trim()}") {
                     popUpTo(navController.graph.findStartDestination().id) {

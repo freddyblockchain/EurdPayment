@@ -2,6 +2,8 @@ package com.example.eurdpayment.Components.Input
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,6 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.eurdpayment.Algorand.Models.Asset
 import com.example.eurdpayment.Algorand.getAanAccountAdress
@@ -41,6 +45,7 @@ fun ReceiverInput(onReceiverChanged: (String) -> Unit, setIsError: (Boolean) -> 
     }
     var listData by remember { mutableStateOf<List<String>>(listOf()) }
     val suggestedNames = remember { mutableStateListOf<String>() }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(Unit) {
         listData = getAanNames()
@@ -79,7 +84,16 @@ fun ReceiverInput(onReceiverChanged: (String) -> Unit, setIsError: (Boolean) -> 
         },
         label = { Text("Enter Receiver") },
         isError = isError,
-        modifier = Modifier.widthIn(max = 280.dp)
+        modifier = Modifier.widthIn(max = 280.dp),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                keyboardController?.hide() // Hide the keyboard when "Done" is pressed
+            }
+        )
+
     )
 
     Column() {
